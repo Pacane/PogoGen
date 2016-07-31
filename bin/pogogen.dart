@@ -7,11 +7,11 @@ import 'package:unscripted/unscripted.dart';
     help: 'This tool is meant to generate multiple accounts configurations '
         'for https://github.com/PokemonGoF/PokemonGo-Bot.')
 Future<Null> generator(
-    {@Option(help: 'Sets the output directory', defaultsTo: 'config', abbr: 'o')
+    {@Option(help: 'Sets the output directory', defaultsTo: 'configs', abbr: 'o')
         String output,
-    @Option(help: 'Sets the input accounts.json file', defaultsTo: 'config/accounts.json', abbr: 'a')
+    @Option(help: 'Sets the input accounts.json file', defaultsTo: 'configs/accounts.json', abbr: 'a')
         String accounts,
-    @Option(help: 'Sets the input sample configuration json file', defaultsTo: 'config.json.pokemon.example', abbr: 'i')
+    @Option(help: 'Sets the input sample configuration json file', defaultsTo: 'configs/config.json.pokemon.example', abbr: 'i')
         String input}) async {
   final outputDirectory = new Directory(output);
   final accountsFile = new File(accounts);
