@@ -15,10 +15,10 @@ You need to have an account json file like [this one](https://github.com/Pacane/
 Put it in `/path/to/PokemonGo-Bot/configs`. You can then fill it with each bot's information.
 The "Global" section will be applied to all configurations.
 
-** NOTE: The currently supported keys are strictly in the provided JSON above. More keys will come. ** 
+__NOTE: The currently supported keys are strictly in the provided JSON above. More keys will come.__
 
 ### PogoGen
-** You need to have [Google Dart](https://www.dartlang.org/) installed. **
+__You need to have [Google Dart](https://www.dartlang.org/) installed.__
 
 - From the terminal run this:
 
