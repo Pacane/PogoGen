@@ -21,10 +21,20 @@ class AccountSettings {
 class GlobalSettings {
   String gmapKey;
   String password;
+  bool longerEggsFirst;
+  bool useLuckyEggs;
+  int maxSteps;
+  double walkSpeed;
+  bool locationCache;
 
   GlobalSettings.fromMap(Map<String, dynamic> json) {
     gmapKey = json['gmapkey'];
     password = json['password'];
+    longerEggsFirst = json['longerEggsFirst'];
+    useLuckyEggs = json['useLuckyEggs'];
+    maxSteps = json['max_steps'];
+    walkSpeed = json['walk'];
+    locationCache = json['location_cache'];
   }
 }
 
@@ -41,8 +51,20 @@ Map<String, dynamic> applyAccountSettings(
 Map<String, dynamic> applyGlobalSettings(
     Map<String, dynamic> config, GlobalSettings global) {
   final newConfig = new Map.from(config) as Map<String, dynamic>;
+
   newConfig['password'] = global.password;
   newConfig['gmapkey'] = global.gmapKey;
+  newConfig['max_steps'] = global.maxSteps;
+  newConfig['walk'] = global.walkSpeed;
+  newConfig['location_cache'] = global.locationCache;
+
+  final incubateEggsTask = (newConfig['tasks'] as List<Map>)
+      .singleWhere((Map m) => m['type'] == 'IncubateEggs');
+  incubateEggsTask['config']['longer_eggs_first'] = global.longerEggsFirst;
+
+  final evolveAllTask = (newConfig['tasks'] as List<Map>)
+      .singleWhere((Map m) => m['type'] == 'EvolveAll');
+  evolveAllTask['config']['use_lucky_egg'] = global.useLuckyEggs;
 
   return newConfig;
 }
