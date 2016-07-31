@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:pogogen/pogogen.dart';
 import 'package:unscripted/unscripted.dart';
+import 'package:path/path.dart' as path;
 
 @Command(
     help: 'This tool is meant to generate multiple accounts configurations '
@@ -13,9 +14,11 @@ Future<Null> generator(
         String accounts,
     @Option(help: 'Sets the input sample configuration json file', defaultsTo: 'configs/config.json.pokemon.example', abbr: 'i')
         String input}) async {
-  final outputDirectory = new Directory(output);
-  final accountsFile = new File(accounts);
-  final inputFile = new File(input);
+  final workingDirectoryPath = path.context.current;
+
+  final outputDirectory = new Directory('$workingDirectoryPath/$output');
+  final accountsFile = new File('$workingDirectoryPath/$accounts');
+  final inputFile = new File('$workingDirectoryPath/$input');
 
   await checkExists(outputDirectory);
   await checkExists(accountsFile);
