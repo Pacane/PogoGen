@@ -19,6 +19,7 @@
       "filename": "sample_filename2",
       "auth_service": "sample_auth_service2",
       "username": "sample_username2",
+      "password": "overwritten",
       "location": "someX,someY"
     }
   ]

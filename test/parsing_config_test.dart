@@ -63,6 +63,16 @@ void main() {
     expect(evolveAllTask['use_lucky_egg'], isFalse);
   });
 
+  test('should overwrite global password when account password is set',
+      () async {
+    var configs = await generator.generateConfigs();
+
+    var secondAccount = configs.keys.last;
+    var config = configs[secondAccount];
+
+    expect(config['password'], 'overwritten');
+  });
+
   test('should write each configs with the correct name and content', () async {
     var config = await generator.generateConfigs();
 

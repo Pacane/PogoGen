@@ -7,12 +7,14 @@ const String evolveAllTaskName = 'EvolveAll';
 
 class AccountSettings {
   String username;
+  String password;
   String filename;
   String authService;
   String location;
 
   AccountSettings.fromMap(Map<String, dynamic> json) {
     username = json['username'];
+    password = json['password'];
     filename = json['filename'];
     authService = json['auth_service'];
     location = json['location'];
@@ -46,6 +48,10 @@ Map<String, dynamic> applyAccountSettings(
   newConfig['auth_service'] = account.authService;
   newConfig['location'] = account.location;
 
+  if (account.password != null) {
+    newConfig['password'] = account.password;
+  }
+
   return newConfig;
 }
 
@@ -53,7 +59,10 @@ Map<String, dynamic> applyGlobalSettings(
     Map<String, dynamic> config, GlobalSettings global) {
   final newConfig = new Map.from(config) as Map<String, dynamic>;
 
-  newConfig['password'] = global.password;
+  if (global.password != null) {
+    newConfig['password'] = global.password;
+  }
+
   newConfig['gmapkey'] = global.gmapKey;
   newConfig['max_steps'] = global.maxSteps;
   newConfig['walk'] = global.walkSpeed;
@@ -106,11 +115,14 @@ class ConfigGenerator {
 
     for (final accountJson in accountsJson) {
       final account = new AccountSettings.fromMap(accountJson);
-      final withAccountSettings = applyAccountSettings(parsedConfig, account);
-      final withGlobalSettings =
-          applyGlobalSettings(withAccountSettings, globalSettings);
 
-      result[account] = withGlobalSettings;
+      final withGlobalSettings =
+          applyGlobalSettings(parsedConfig, globalSettings);
+
+      final withAccountSettings =
+          applyAccountSettings(withGlobalSettings, account);
+
+      result[account] = withAccountSettings;
     }
 
     return result;
@@ -119,7 +131,8 @@ class ConfigGenerator {
   Future<Null> writeConfigs(
       Map<AccountSettings, Map<String, dynamic>> accounts) async {
     accounts.forEach((AccountSettings account, Map config) async {
-      final toWrite = new File('${outputDirectory.path}/${account.filename}.json');
+      final toWrite =
+          new File('${outputDirectory.path}/${account.filename}.json');
       await toWrite.writeAsString(encoder.convert(config));
     });
   }
