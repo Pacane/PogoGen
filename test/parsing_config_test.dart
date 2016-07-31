@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart' as path;
-import 'package:pokemon_go_bot_config_generator/generator.dart';
+import 'package:pogogen/generator.dart';
 import 'package:test/test.dart';
 
 String context = path.context.current;

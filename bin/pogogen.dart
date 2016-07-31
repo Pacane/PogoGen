@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:pogogen/generator.dart';
 import 'package:unscripted/unscripted.dart';
-import 'package:pokemon_go_bot_config_generator/generator.dart';
 
 @Command(
     help: 'This tool is meant to generate multiple accounts configurations '
