@@ -6,13 +6,14 @@ import 'package:test/test.dart';
 
 String context = path.context.current;
 Directory workingDirectory = new Directory('$context/test');
-File sampleConfig = new File('$workingDirectory/config.json.pokemon.example');
-File accountsFile = new File('$workingDirectory/accounts.json');
+File sampleConfig =
+    new File('${workingDirectory.path}/config.json.pokemon.example');
+File accountsFile = new File('${workingDirectory.path}/accounts.json');
 ConfigGenerator generator;
 
 Future<Null> clearTestFiles(List<String> filenames) async {
   for (final filename in filenames) {
-    final file = new File('$workingDirectory/$filename');
+    final file = new File('${workingDirectory.path}/$filename');
     if (await file.exists()) {
       await file.delete();
     }

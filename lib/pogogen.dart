@@ -119,7 +119,7 @@ class ConfigGenerator {
   Future<Null> writeConfigs(
       Map<AccountSettings, Map<String, dynamic>> accounts) async {
     accounts.forEach((AccountSettings account, Map config) async {
-      final toWrite = new File('$outputDirectory/${account.filename}.json');
+      final toWrite = new File('${outputDirectory.path}/${account.filename}.json');
       await toWrite.writeAsString(encoder.convert(config));
     });
   }
