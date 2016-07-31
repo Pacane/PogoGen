@@ -1,4 +1,6 @@
 name: pogogen
+author: Joel Trottier-Hebert <iamquebecois@gmail.com>
+homepage: https://github.com/Pacane/pogogen
 version: 0.0.1
 description: A console application used to generate multiple configuration files for [PokemonGo-Bot](https://github.com/PokemonGoF/PokemonGo-Bot/).
 dependencies:

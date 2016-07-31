@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart' as path;
-import 'package:pogogen/generator.dart';
+import 'package:pogogen/pogogen.dart';
 import 'package:test/test.dart';
 
 String context = path.context.current;
