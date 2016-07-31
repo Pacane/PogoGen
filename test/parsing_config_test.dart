@@ -21,7 +21,8 @@ Future<Null> clearTestFiles(List<String> filenames) async {
 
 void main() {
   setUp(() {
-    generator = new ConfigGenerator();
+    generator = new ConfigGenerator(
+        sampleConfigPath, accountsFilePath, workingDirectoryPath);
   });
 
   tearDown(() async {
@@ -39,8 +40,7 @@ void main() {
   }, skip: false);
 
   test('should apply global and account settings', () async {
-    var config =
-        await generator.generateConfigs(sampleConfigPath, accountsFilePath);
+    var config = await generator.generateConfigs();
 
     expect(config.keys.length, 2);
     var firstAccount = config.keys.first;
@@ -63,9 +63,8 @@ void main() {
   });
 
   test('should write each configs with the correct name and content', () async {
-    var config =
-        await generator.generateConfigs(sampleConfigPath, accountsFilePath);
+    var config = await generator.generateConfigs();
 
-    generator.writeConfigs(config, workingDirectoryPath);
+    generator.writeConfigs(config);
   });
 }

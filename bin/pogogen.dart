@@ -24,10 +24,10 @@ Future<Null> generator(
   await checkExists(accountsFile);
   await checkExists(inputFile);
 
-  final configGenerator = new ConfigGenerator();
-  final configs =
-      await configGenerator.generateConfigs(inputFile.path, accountsFile.path);
-  await configGenerator.writeConfigs(configs, outputDirectory.path);
+  final configGenerator = new ConfigGenerator(
+      inputFile.path, accountsFile.path, outputDirectory.path);
+  final configs = await configGenerator.generateConfigs();
+  await configGenerator.writeConfigs(configs);
 }
 
 Future<Null> checkExists(FileSystemEntity entity) async {

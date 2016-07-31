@@ -71,7 +71,13 @@ Map<String, dynamic> applyGlobalSettings(
 }
 
 class ConfigGenerator {
-  JsonEncoder encoder = new JsonEncoder.withIndent('    ');
+  String sampleConfigPath;
+  String accountsFilePath;
+  String outputDirectoryPath;
+  JsonEncoder encoder = const JsonEncoder.withIndent('    ');
+
+  ConfigGenerator(
+      this.sampleConfigPath, this.accountsFilePath, this.outputDirectoryPath);
 
   Future<Map<String, dynamic>> parseConfig(String configPath) async {
     final configFile = new File(configPath);
@@ -91,8 +97,7 @@ class ConfigGenerator {
     return accountsJson;
   }
 
-  Future<Map<AccountSettings, Map<String, dynamic>>> generateConfigs(
-      String sampleConfigPath, String accountsFilePath) async {
+  Future<Map<AccountSettings, Map<String, dynamic>>> generateConfigs() async {
     final parsedConfig = await parseConfig(sampleConfigPath);
     final jsonAccountsFile = await parseAccounts(accountsFilePath);
 
@@ -116,10 +121,10 @@ class ConfigGenerator {
     return result;
   }
 
-  Future<Null> writeConfigs(Map<AccountSettings, Map<String, dynamic>> accounts,
-      String outputDirectory) async {
+  Future<Null> writeConfigs(
+      Map<AccountSettings, Map<String, dynamic>> accounts) async {
     accounts.forEach((AccountSettings account, Map config) async {
-      final toWrite = new File('$outputDirectory/${account.filename}.json');
+      final toWrite = new File('$outputDirectoryPath/${account.filename}.json');
       await toWrite.writeAsString(encoder.convert(config));
     });
   }
