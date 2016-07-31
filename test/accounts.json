@@ -1,0 +1,20 @@
+{
+  "global": {
+    "gmapkey": "sample_gmapkey",
+    "password": "sample_password"
+  },
+  "accounts": [
+    {
+      "filename": "sample_filename",
+      "auth_service": "sample_auth_service",
+      "username": "sample_username",
+      "location": "someX,someY"
+    },
+    {
+      "filename": "sample_filename2",
+      "auth_service": "sample_auth_service2",
+      "username": "sample_username2",
+      "location": "someX,someY"
+    }
+  ]
+}
