@@ -30,8 +30,8 @@ class GlobalSettings {
   GlobalSettings.fromMap(Map<String, dynamic> json) {
     gmapKey = json['gmapkey'];
     password = json['password'];
-    longerEggsFirst = json['longerEggsFirst'];
-    useLuckyEggs = json['useLuckyEggs'];
+    longerEggsFirst = json['longer_eggs_first'];
+    useLuckyEggs = json['use_lucky_eggs'];
     maxSteps = json['max_steps'];
     walkSpeed = json['walk'];
     locationCache = json['location_cache'];
