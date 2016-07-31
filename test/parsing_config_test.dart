@@ -27,7 +27,11 @@ void main() {
   });
 
   tearDown(() async {
-    await clearTestFiles(['sample_filename.json', 'sample_filename2.json']);
+    await clearTestFiles([
+      'sample_filename.json',
+      'sample_filename2.json',
+      'sample_filename3.json'
+    ]);
   });
 
   test('should be able to parse login information', () async {
@@ -43,7 +47,6 @@ void main() {
   test('should apply global and account settings', () async {
     var config = await generator.generateConfigs();
 
-    expect(config.keys.length, 2);
     var firstAccount = config.keys.first;
     var firstConfig = config[firstAccount];
 
@@ -77,5 +80,11 @@ void main() {
     var config = await generator.generateConfigs();
 
     generator.writeConfigs(config);
+  });
+
+  test("shouldn't produce config for disabled account", () async {
+    var configs = await generator.generateConfigs();
+
+    expect(configs.keys, hasLength(2));
   });
 }

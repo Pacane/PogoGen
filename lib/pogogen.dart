@@ -11,6 +11,7 @@ class AccountSettings {
   String filename;
   String authService;
   String location;
+  bool enabled;
 
   AccountSettings.fromMap(Map<String, dynamic> json) {
     username = json['username'];
@@ -18,6 +19,7 @@ class AccountSettings {
     filename = json['filename'];
     authService = json['auth_service'];
     location = json['location'];
+    enabled = json['enabled'];
   }
 }
 
@@ -115,6 +117,10 @@ class ConfigGenerator {
 
     for (final accountJson in accountsJson) {
       final account = new AccountSettings.fromMap(accountJson);
+
+      if (!account.enabled) {
+        continue;
+      }
 
       final withGlobalSettings =
           applyGlobalSettings(parsedConfig, globalSettings);

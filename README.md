@@ -10,35 +10,7 @@ Now I've made this to update my files easily when the structure changed.
 ## Instructions
 
 ### The account file
-You need to have an account json file like this one:
-
-```json
-{
-  "global": {
-    "gmapkey": "sample_gmapkey",
-    "password": "sample_password",
-    "location_cache": false,
-    "longer_eggs_first": false,
-    "use_lucky_egg": false,
-    "max_steps": 12,
-    "walk": 4.16
-  },
-  "accounts": [
-    {
-      "filename": "sample_filename",
-      "auth_service": "sample_auth_service",
-      "username": "sample_username",
-      "location": "someX,someY"
-    },
-    {
-      "filename": "sample_filename2",
-      "auth_service": "sample_auth_service2",
-      "username": "sample_username2",
-      "location": "someX,someY"
-    }
-  ]
-}
-```
+You need to have an account json file like [this one](https://github.com/Pacane/PogoGen/tree/master/test/accounts.json):
 
 Put it in `/path/to/PokemonGo-Bot/configs`. You can then fill it with each bot's information.
 The "Global" section will be applied to all configurations.
