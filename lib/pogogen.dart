@@ -71,26 +71,21 @@ Map<String, dynamic> applyGlobalSettings(
 }
 
 class ConfigGenerator {
-  String sampleConfigPath;
-  String accountsFilePath;
-  String outputDirectoryPath;
+  File sampleConfig;
+  File accountsFile;
+  Directory outputDirectory;
   JsonEncoder encoder = const JsonEncoder.withIndent('    ');
 
-  ConfigGenerator(
-      this.sampleConfigPath, this.accountsFilePath, this.outputDirectoryPath);
+  ConfigGenerator(this.sampleConfig, this.accountsFile, this.outputDirectory);
 
-  Future<Map<String, dynamic>> parseConfig(String configPath) async {
-    final configFile = new File(configPath);
-
+  Future<Map<String, dynamic>> parseConfig(File configFile) async {
     final fileAsString = await configFile.readAsString();
     final jsonConfig = JSON.decode(fileAsString) as Map<String, dynamic>;
 
     return jsonConfig;
   }
 
-  Future<Map<String, dynamic>> parseAccounts(String accountsFilePath) async {
-    final accountsFile = new File(accountsFilePath);
-
+  Future<Map<String, dynamic>> parseAccounts(File accountsFile) async {
     final fileAsString = await accountsFile.readAsString();
     final accountsJson = JSON.decode(fileAsString);
 
@@ -98,8 +93,8 @@ class ConfigGenerator {
   }
 
   Future<Map<AccountSettings, Map<String, dynamic>>> generateConfigs() async {
-    final parsedConfig = await parseConfig(sampleConfigPath);
-    final jsonAccountsFile = await parseAccounts(accountsFilePath);
+    final parsedConfig = await parseConfig(sampleConfig);
+    final jsonAccountsFile = await parseAccounts(accountsFile);
 
     final globalSettings = new GlobalSettings.fromMap(
         jsonAccountsFile['global'] as Map<String, dynamic>);
@@ -124,7 +119,7 @@ class ConfigGenerator {
   Future<Null> writeConfigs(
       Map<AccountSettings, Map<String, dynamic>> accounts) async {
     accounts.forEach((AccountSettings account, Map config) async {
-      final toWrite = new File('$outputDirectoryPath/${account.filename}.json');
+      final toWrite = new File('$outputDirectory/${account.filename}.json');
       await toWrite.writeAsString(encoder.convert(config));
     });
   }

@@ -24,8 +24,8 @@ Future<Null> generator(
   await checkExists(accountsFile);
   await checkExists(inputFile);
 
-  final configGenerator = new ConfigGenerator(
-      inputFile.path, accountsFile.path, outputDirectory.path);
+  final configGenerator =
+      new ConfigGenerator(inputFile, accountsFile, outputDirectory);
   final configs = await configGenerator.generateConfigs();
   await configGenerator.writeConfigs(configs);
 }

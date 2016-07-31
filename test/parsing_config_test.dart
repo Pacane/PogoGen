@@ -5,14 +5,14 @@ import 'package:pogogen/pogogen.dart';
 import 'package:test/test.dart';
 
 String context = path.context.current;
-String workingDirectoryPath = '$context/test';
-String sampleConfigPath = '$workingDirectoryPath/config.json.pokemon.example';
-String accountsFilePath = '$workingDirectoryPath/accounts.json';
+Directory workingDirectory = new Directory('$context/test');
+File sampleConfig = new File('$workingDirectory/config.json.pokemon.example');
+File accountsFile = new File('$workingDirectory/accounts.json');
 ConfigGenerator generator;
 
 Future<Null> clearTestFiles(List<String> filenames) async {
   for (final filename in filenames) {
-    final file = new File('$workingDirectoryPath/$filename');
+    final file = new File('$workingDirectory/$filename');
     if (await file.exists()) {
       await file.delete();
     }
@@ -21,8 +21,8 @@ Future<Null> clearTestFiles(List<String> filenames) async {
 
 void main() {
   setUp(() {
-    generator = new ConfigGenerator(
-        sampleConfigPath, accountsFilePath, workingDirectoryPath);
+    generator =
+        new ConfigGenerator(sampleConfig, accountsFile, workingDirectory);
   });
 
   tearDown(() async {
@@ -30,7 +30,7 @@ void main() {
   });
 
   test('should be able to parse login information', () async {
-    var config = await generator.parseConfig(sampleConfigPath);
+    var config = await generator.parseConfig(sampleConfig);
 
     expect(config['auth_service'], isNotNull);
     expect(config['username'], isNotNull);
