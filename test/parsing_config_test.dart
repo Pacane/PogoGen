@@ -38,7 +38,7 @@ void main() {
     expect(config['location'], isNotNull);
   }, skip: false);
 
-  test('should apply global configs', () async {
+  test('should apply global and account settings', () async {
     var config =
         await generator.generateConfigs(sampleConfigPath, accountsFilePath);
 
@@ -51,6 +51,15 @@ void main() {
     expect(firstConfig['password'], 'sample_password');
     expect(firstConfig['location'], 'someX,someY');
     expect(firstConfig['gmapkey'], 'sample_gmapkey');
+    expect(firstConfig['location_cache'], isFalse);
+    expect(firstConfig['max_steps'], 12);
+    expect(firstConfig['walk'], 4.16);
+
+    final incubateTask = getTaskConfig(incubateTaskName, firstConfig);
+    expect(incubateTask['longer_eggs_first'], isFalse);
+
+    final evolveAllTask = getTaskConfig(evolveAllTaskName, firstConfig);
+    expect(evolveAllTask['use_lucky_egg'], isFalse);
   });
 
   test('should write each configs with the correct name and content', () async {

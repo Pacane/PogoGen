@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
-typedef Map<String, dynamic> ApplyConfig(Map<String, dynamic> originalConfig);
+const String incubateTaskName = 'IncubateEggs';
+const String evolveAllTaskName = 'EvolveAll';
 
 class AccountSettings {
   String username;
@@ -22,7 +23,7 @@ class GlobalSettings {
   String gmapKey;
   String password;
   bool longerEggsFirst;
-  bool useLuckyEggs;
+  bool useLuckyEgg;
   int maxSteps;
   double walkSpeed;
   bool locationCache;
@@ -31,7 +32,7 @@ class GlobalSettings {
     gmapKey = json['gmapkey'];
     password = json['password'];
     longerEggsFirst = json['longer_eggs_first'];
-    useLuckyEggs = json['use_lucky_eggs'];
+    useLuckyEgg = json['use_lucky_egg'];
     maxSteps = json['max_steps'];
     walkSpeed = json['walk'];
     locationCache = json['location_cache'];
@@ -64,7 +65,7 @@ Map<String, dynamic> applyGlobalSettings(
 
   final evolveAllTask = (newConfig['tasks'] as List<Map>)
       .singleWhere((Map m) => m['type'] == 'EvolveAll');
-  evolveAllTask['config']['use_lucky_egg'] = global.useLuckyEggs;
+  evolveAllTask['config']['use_lucky_egg'] = global.useLuckyEgg;
 
   return newConfig;
 }
@@ -122,4 +123,13 @@ class ConfigGenerator {
       await toWrite.writeAsString(encoder.convert(config));
     });
   }
+}
+
+Map<String, dynamic> getTaskConfig(
+    String taskName, Map<String, dynamic> fromConfig) {
+  var tasks = fromConfig['tasks'] as List<Map>;
+  var matchingTask = (tasks).singleWhere((Map m) => m['type'] == taskName)
+      as Map<String, dynamic>;
+
+  return matchingTask['config'] as Map<String, dynamic>;
 }
