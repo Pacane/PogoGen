@@ -87,4 +87,13 @@ void main() {
 
     expect(configs.keys, hasLength(2));
   });
+
+  test("removeSpiral should remove the task completely", () async {
+    var configs = await generator.generateConfigs();
+
+    var config = configs[configs.keys.first];
+    var tasks = config['tasks'] as List<Map>;
+
+    expect(tasks.any((Map m) => m['type'] == followSpiralTaskName), isFalse);
+  });
 }

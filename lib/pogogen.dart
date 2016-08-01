@@ -4,6 +4,7 @@ import 'dart:convert';
 
 const String incubateTaskName = 'IncubateEggs';
 const String evolveAllTaskName = 'EvolveAll';
+const String followSpiralTaskName = 'FollowSpiral';
 
 class AccountSettings {
   String username;
@@ -31,6 +32,7 @@ class GlobalSettings {
   int maxSteps;
   double walkSpeed;
   bool locationCache;
+  bool removeSpiral;
 
   GlobalSettings.fromMap(Map<String, dynamic> json) {
     gmapKey = json['gmapkey'];
@@ -40,6 +42,7 @@ class GlobalSettings {
     maxSteps = json['max_steps'];
     walkSpeed = json['walk'];
     locationCache = json['location_cache'];
+    removeSpiral = json['remove_spiral'];
   }
 }
 
@@ -70,13 +73,17 @@ Map<String, dynamic> applyGlobalSettings(
   newConfig['walk'] = global.walkSpeed;
   newConfig['location_cache'] = global.locationCache;
 
-  final incubateEggsTask = (newConfig['tasks'] as List<Map>)
-      .singleWhere((Map m) => m['type'] == 'IncubateEggs');
+  final tasks = newConfig['tasks'] as List<Map>;
+
+  final incubateEggsTask =
+      (tasks).singleWhere((Map m) => m['type'] == incubateTaskName);
   incubateEggsTask['config']['longer_eggs_first'] = global.longerEggsFirst;
 
-  final evolveAllTask = (newConfig['tasks'] as List<Map>)
-      .singleWhere((Map m) => m['type'] == 'EvolveAll');
+  final evolveAllTask =
+      (tasks).singleWhere((Map m) => m['type'] == evolveAllTaskName);
   evolveAllTask['config']['use_lucky_egg'] = global.useLuckyEgg;
+
+  tasks.removeWhere((Map m) => m['type'] == followSpiralTaskName);
 
   return newConfig;
 }
