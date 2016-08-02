@@ -10,6 +10,13 @@ File sampleConfig =
     new File('${workingDirectory.path}/config.json.pokemon.example');
 File accountsFile = new File('${workingDirectory.path}/accounts.json');
 ConfigGenerator generator;
+Map<AccountSettings, Map<String, dynamic>> configs;
+
+Map<String, dynamic> get firstConfig {
+  var firstAccount = configs.keys.first;
+  var firstConfig = configs[firstAccount];
+  return firstConfig;
+}
 
 Future<Null> clearTestFiles(List<String> filenames) async {
   for (final filename in filenames) {
@@ -21,9 +28,11 @@ Future<Null> clearTestFiles(List<String> filenames) async {
 }
 
 void main() {
-  setUp(() {
+  setUp(() async {
     generator =
         new ConfigGenerator(sampleConfig, accountsFile, workingDirectory);
+
+    configs = await generator.generateConfigs();
   });
 
   tearDown(() async {
@@ -42,14 +51,9 @@ void main() {
     expect(config['password'], isNotNull);
     expect(config['gmapkey'], isNotNull);
     expect(config['location'], isNotNull);
-  }, skip: false);
+  });
 
   test('should apply global and account settings', () async {
-    var config = await generator.generateConfigs();
-
-    var firstAccount = config.keys.first;
-    var firstConfig = config[firstAccount];
-
     expect(firstConfig['auth_service'], 'sample_auth_service');
     expect(firstConfig['username'], 'sample_username');
     expect(firstConfig['password'], 'sample_password');
@@ -68,43 +72,43 @@ void main() {
 
   test('should overwrite global password when account password is set',
       () async {
-    var configs = await generator.generateConfigs();
-
     var secondAccount = configs.keys.last;
     var config = configs[secondAccount];
 
     expect(config['password'], 'overwritten');
   });
 
-  test('should write each configs with the correct name and content', () async {
-    var config = await generator.generateConfigs();
-
-    generator.writeConfigs(config);
-  });
-
   test("shouldn't produce config for disabled account", () async {
-    var configs = await generator.generateConfigs();
-
     expect(configs.keys, hasLength(2));
   });
 
   test("removeSpiral should remove the task completely", () async {
-    var configs = await generator.generateConfigs();
-
-    var config = configs[configs.keys.first];
-    var tasks = config['tasks'] as List<Map>;
+    var tasks = firstConfig['tasks'] as List<Map>;
 
     expect(tasks.any((Map m) => m['type'] == followSpiralTaskName), isFalse);
   });
 
   test("remove crap pokemons remove B-grade but not others from release",
       () async {
-    var configs = await generator.generateConfigs();
-
-    var config = configs[configs.keys.first];
-    var release = config['release'] as Map<String, dynamic>;
+    var release = firstConfig['release'] as Map<String, dynamic>;
 
     expect(release['Lapras'], isNotNull);
     expect(release['Golbat'], isNull);
+  });
+
+  group('release_any_rule', () async {
+
+  });
+
+  test('release_any_rule should overwrite the "any" release rule', () async {
+    var release = firstConfig['release'] as Map<String, dynamic>;
+
+    var expected = {
+      "release_below_cp": 600,
+      "release_below_iv": 0.85,
+      "logic": "and"
+    };
+
+    expect(release['any'], expected);
   });
 }

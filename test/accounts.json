@@ -8,7 +8,12 @@
     "max_steps": 12,
     "walk": 4.16,
     "remove_spiral": true,
-    "remove_crap_pokemons": true
+    "remove_crap_pokemons": true,
+    "release_any_rule": {
+      "release_below_cp": 600,
+      "release_below_iv": 0.85,
+      "logic": "and"
+    }
   },
   "accounts": [
     {

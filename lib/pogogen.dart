@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'src/remove_crap_pokemons.dart';
+import 'src/apply_remove_any_release_rule.dart';
 
 const String incubateTaskName = 'IncubateEggs';
 const String evolveAllTaskName = 'EvolveAll';
@@ -35,6 +36,7 @@ class GlobalSettings {
   bool locationCache;
   bool removeSpiral;
   bool removeCrapPokemons;
+  Map<String, dynamic> releaseAnyRule;
 
   GlobalSettings.fromMap(Map<String, dynamic> json) {
     gmapKey = json['gmapkey'];
@@ -46,6 +48,7 @@ class GlobalSettings {
     locationCache = json['location_cache'];
     removeSpiral = json['remove_spiral'];
     removeCrapPokemons = json['remove_crap_pokemons'];
+    releaseAnyRule = json['release_any_rule'] as Map<String, dynamic>;
   }
 }
 
@@ -152,6 +155,10 @@ class ConfigGenerator {
 
     if (settings.removeCrapPokemons) {
       removeCrapPokemons(newConfig);
+    }
+
+    if (settings.releaseAnyRule != null) {
+      applyNewReleaseAnyRule(config, settings.releaseAnyRule);
     }
 
     return newConfig;
