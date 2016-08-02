@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'src/remove_crap_pokemons.dart';
 
 const String incubateTaskName = 'IncubateEggs';
 const String evolveAllTaskName = 'EvolveAll';
@@ -33,6 +34,7 @@ class GlobalSettings {
   double walkSpeed;
   bool locationCache;
   bool removeSpiral;
+  bool removeCrapPokemons;
 
   GlobalSettings.fromMap(Map<String, dynamic> json) {
     gmapKey = json['gmapkey'];
@@ -43,49 +45,8 @@ class GlobalSettings {
     walkSpeed = json['walk'];
     locationCache = json['location_cache'];
     removeSpiral = json['remove_spiral'];
+    removeCrapPokemons = json['remove_crap_pokemons'];
   }
-}
-
-Map<String, dynamic> applyAccountSettings(
-    Map<String, dynamic> config, AccountSettings account) {
-  final newConfig = new Map.from(config) as Map<String, dynamic>;
-  newConfig['username'] = account.username;
-  newConfig['auth_service'] = account.authService;
-  newConfig['location'] = account.location;
-
-  if (account.password != null) {
-    newConfig['password'] = account.password;
-  }
-
-  return newConfig;
-}
-
-Map<String, dynamic> applyGlobalSettings(
-    Map<String, dynamic> config, GlobalSettings global) {
-  final newConfig = new Map.from(config) as Map<String, dynamic>;
-
-  if (global.password != null) {
-    newConfig['password'] = global.password;
-  }
-
-  newConfig['gmapkey'] = global.gmapKey;
-  newConfig['max_steps'] = global.maxSteps;
-  newConfig['walk'] = global.walkSpeed;
-  newConfig['location_cache'] = global.locationCache;
-
-  final tasks = newConfig['tasks'] as List<Map>;
-
-  final incubateEggsTask =
-      (tasks).singleWhere((Map m) => m['type'] == incubateTaskName);
-  incubateEggsTask['config']['longer_eggs_first'] = global.longerEggsFirst;
-
-  final evolveAllTask =
-      (tasks).singleWhere((Map m) => m['type'] == evolveAllTaskName);
-  evolveAllTask['config']['use_lucky_egg'] = global.useLuckyEgg;
-
-  tasks.removeWhere((Map m) => m['type'] == followSpiralTaskName);
-
-  return newConfig;
 }
 
 class ConfigGenerator {
@@ -148,6 +109,52 @@ class ConfigGenerator {
           new File('${outputDirectory.path}/${account.filename}.json');
       await toWrite.writeAsString(encoder.convert(config));
     });
+  }
+
+  Map<String, dynamic> applyAccountSettings(
+      Map<String, dynamic> config, AccountSettings account) {
+    final newConfig = new Map.from(config) as Map<String, dynamic>;
+    newConfig['username'] = account.username;
+    newConfig['auth_service'] = account.authService;
+    newConfig['location'] = account.location;
+
+    if (account.password != null) {
+      newConfig['password'] = account.password;
+    }
+
+    return newConfig;
+  }
+
+  Map<String, dynamic> applyGlobalSettings(
+      Map<String, dynamic> config, GlobalSettings settings) {
+    final newConfig = new Map.from(config) as Map<String, dynamic>;
+
+    if (settings.password != null) {
+      newConfig['password'] = settings.password;
+    }
+
+    newConfig['gmapkey'] = settings.gmapKey;
+    newConfig['max_steps'] = settings.maxSteps;
+    newConfig['walk'] = settings.walkSpeed;
+    newConfig['location_cache'] = settings.locationCache;
+
+    final tasks = newConfig['tasks'] as List<Map>;
+
+    final incubateEggsTask =
+        (tasks).singleWhere((Map m) => m['type'] == incubateTaskName);
+    incubateEggsTask['config']['longer_eggs_first'] = settings.longerEggsFirst;
+
+    final evolveAllTask =
+        (tasks).singleWhere((Map m) => m['type'] == evolveAllTaskName);
+    evolveAllTask['config']['use_lucky_egg'] = settings.useLuckyEgg;
+
+    tasks.removeWhere((Map m) => m['type'] == followSpiralTaskName);
+
+    if (settings.removeCrapPokemons) {
+      removeCrapPokemons(newConfig);
+    }
+
+    return newConfig;
   }
 }
 

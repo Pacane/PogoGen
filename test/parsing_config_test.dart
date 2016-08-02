@@ -96,4 +96,15 @@ void main() {
 
     expect(tasks.any((Map m) => m['type'] == followSpiralTaskName), isFalse);
   });
+
+  test("remove crap pokemons remove B-grade but not others from release",
+      () async {
+    var configs = await generator.generateConfigs();
+
+    var config = configs[configs.keys.first];
+    var release = config['release'] as Map<String, dynamic>;
+
+    expect(release['Lapras'], isNotNull);
+    expect(release['Golbat'], isNull);
+  });
 }

@@ -7,7 +7,8 @@
     "use_lucky_egg": false,
     "max_steps": 12,
     "walk": 4.16,
-    "remove_spiral": true
+    "remove_spiral": true,
+    "remove_crap_pokemons": true
   },
   "accounts": [
     {
