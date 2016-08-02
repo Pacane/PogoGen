@@ -96,9 +96,7 @@ void main() {
     expect(release['Golbat'], isNull);
   });
 
-  group('release_any_rule', () async {
-
-  });
+  group('release_any_rule', () async {});
 
   test('release_any_rule should overwrite the "any" release rule', () async {
     var release = firstConfig['release'] as Map<String, dynamic>;
@@ -110,5 +108,28 @@ void main() {
     };
 
     expect(release['any'], expected);
+  });
+
+  test('items should override items_filter', () async {
+    var tasks = firstConfig['tasks'] as List<Map<String, dynamic>>;
+    var items = tasks.singleWhere((Map m) => m['type'] == recycleItemsTask)[
+        'config']['item_filter'];
+
+    var expected = {
+      "Pokeball": 10,
+      "Greatball": 10,
+      "Ultraball": 100,
+      "Potion": 1,
+      "Super Potion": 10,
+      "Hyper Potion": 10,
+      "Max Potion": 20,
+      "Revive": 10,
+      "Max Revive": 20,
+      "Razz Berry": 70
+    };
+
+    expected.forEach((item, quantity) {
+      expect(items[item]['keep'], quantity);
+    });
   });
 }

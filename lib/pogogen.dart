@@ -3,6 +3,9 @@ import 'dart:io';
 import 'dart:convert';
 import 'src/remove_crap_pokemons.dart';
 import 'src/apply_remove_any_release_rule.dart';
+import 'src/apply_items_filter.dart';
+
+export 'src/apply_items_filter.dart';
 
 const String incubateTaskName = 'IncubateEggs';
 const String evolveAllTaskName = 'EvolveAll';
@@ -37,6 +40,7 @@ class GlobalSettings {
   bool removeSpiral;
   bool removeCrapPokemons;
   Map<String, dynamic> releaseAnyRule;
+  Map<String, int> itemFilters;
 
   GlobalSettings.fromMap(Map<String, dynamic> json) {
     gmapKey = json['gmapkey'];
@@ -49,6 +53,7 @@ class GlobalSettings {
     removeSpiral = json['remove_spiral'];
     removeCrapPokemons = json['remove_crap_pokemons'];
     releaseAnyRule = json['release_any_rule'] as Map<String, dynamic>;
+    itemFilters = json['items'] as Map<String, int>;
   }
 }
 
@@ -159,6 +164,10 @@ class ConfigGenerator {
 
     if (settings.releaseAnyRule != null) {
       applyNewReleaseAnyRule(config, settings.releaseAnyRule);
+    }
+
+    if (settings.itemFilters != null) {
+      applyItemFilters(config, settings.itemFilters);
     }
 
     return newConfig;
