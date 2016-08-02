@@ -13,6 +13,18 @@
       "release_below_cp": 600,
       "release_below_iv": 0.85,
       "logic": "and"
+    },
+    "items": {
+      "Pokeball": 10,
+      "Greatball": 10,
+      "Ultraball": 100,
+      "Potion": 1,
+      "Super Potion": 10,
+      "Hyper Potion": 10,
+      "Max Potion": 20,
+      "Revive": 10,
+      "Max Revive": 20,
+      "Razz Berry": 75
     }
   },
   "accounts": [

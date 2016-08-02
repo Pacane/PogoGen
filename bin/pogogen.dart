@@ -16,9 +16,12 @@ Future<Null> generator(
         String input}) async {
   final workingDirectoryPath = path.context.current;
 
-  final outputDirectory = new Directory('$workingDirectoryPath/$output');
-  final accountsFile = new File('$workingDirectoryPath/$accounts');
-  final inputFile = new File('$workingDirectoryPath/$input');
+  final outputDirectory =
+      new Directory.fromUri(path.toUri('$workingDirectoryPath/$output'));
+  final accountsFile =
+      new File.fromUri(path.toUri('$workingDirectoryPath/$accounts'));
+  final inputFile =
+      new File.fromUri(path.toUri('$workingDirectoryPath/$input'));
 
   await checkExists(outputDirectory);
   await checkExists(accountsFile);
