@@ -113,7 +113,7 @@ void main() {
   test('items should override items_filter', () async {
     var tasks = firstConfig['tasks'] as List<Map<String, dynamic>>;
     var items = tasks.singleWhere((Map m) => m['type'] == recycleItemsTask)[
-        'config']['item_filter'];
+        'config'][itemFilter];
 
     var expected = {
       "Pokeball": 10,
@@ -129,7 +129,7 @@ void main() {
     };
 
     expected.forEach((item, quantity) {
-      expect(items[item]['keep'], quantity);
+      expect(items[item][keep], quantity);
     });
   });
 }
