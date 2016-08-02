@@ -142,7 +142,11 @@ class ConfigGenerator {
     }
 
     newConfig['gmapkey'] = settings.gmapKey;
-    newConfig['max_steps'] = settings.maxSteps;
+
+    if (settings.maxSteps != null) {
+      newConfig['max_steps'] = settings.maxSteps;
+    }
+
     newConfig['walk'] = settings.walkSpeed;
     newConfig['location_cache'] = settings.locationCache;
 
