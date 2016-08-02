@@ -160,7 +160,9 @@ class ConfigGenerator {
         (tasks).singleWhere((Map m) => m['type'] == evolveAllTaskName);
     evolveAllTask['config']['use_lucky_egg'] = settings.useLuckyEgg;
 
-    tasks.removeWhere((Map m) => m['type'] == followSpiralTaskName);
+    if (settings.removeSpiral == true) {
+      tasks.removeWhere((Map m) => m['type'] == followSpiralTaskName);
+    }
 
     if (settings.removeCrapPokemons) {
       removeCrapPokemons(newConfig);
