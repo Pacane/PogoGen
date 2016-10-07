@@ -1,5 +1,7 @@
 # PogoGen
 
+## RIP PokemonGo-Bot :(
+
 ## Why?
 If you're using [PokemonGo-Bot](https://github.com/PokemonGoF/PokemonGo-Bot/) 
 to level multiple accounts, you might have noticed that the `dev` branch
